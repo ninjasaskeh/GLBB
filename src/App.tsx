@@ -8,9 +8,14 @@ import { Play, Pause, RotateCcw } from "lucide-react";
 function App() {
   const [isRunning, setIsRunning] = useState(false);
   const [resetTrigger, setResetTrigger] = useState(0);
-  const [trackLength, setTrackLength] = useState(500);
-  const [trackLengthInput, setTrackLengthInput] = useState(
-    trackLength.toString(),
+
+  const [trackLength1, setTrackLength1] = useState(500);
+  const [trackLengthInput1, setTrackLengthInput1] = useState(
+    trackLength1.toString()
+  );
+  const [trackLength2, setTrackLength2] = useState(500);
+  const [trackLengthInput2, setTrackLengthInput2] = useState(
+    trackLength2.toString()
   );
 
   const [hasFinished1, setHasFinished1] = useState(false);
@@ -69,8 +74,12 @@ function App() {
   };
 
   useEffect(() => {
-    setTrackLengthInput(trackLength.toString());
-  }, [trackLength]);
+    setTrackLengthInput1(trackLength1.toString());
+  }, [trackLength1]);
+
+  useEffect(() => {
+    setTrackLengthInput2(trackLength2.toString());
+  }, [trackLength2]);
 
   const toggleSimulation = () => {
     if (!hasFinished1 || !hasFinished2) {
@@ -79,10 +88,10 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4">
+    <div className="min-h-screen px-4 py-8 bg-gray-100">
       <div className="max-w-6xl mx-auto space-y-6">
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <div className="p-6 bg-white rounded-lg shadow-md">
+          <h1 className="mb-2 text-3xl font-bold text-gray-900">
             Simulator Gerak Lurus
           </h1>
           <p className="text-gray-600">
@@ -90,7 +99,7 @@ function App() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <MotionControls
             data={motionData1}
             onChange={handleMotionChange1}
@@ -103,37 +112,62 @@ function App() {
           />
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Panjang Track (m)
-            </label>
-            <input
-              type="number"
-              required
-              min="0"
-              disabled={isRunning}
-              value={trackLengthInput}
-              onChange={(e) => {
-                const val = e.target.value;
-                setTrackLengthInput(val);
-                const parsed = parseFloat(val);
-                if (!isNaN(parsed) && parsed >= 0) {
-                  setTrackLength(parsed);
-                } else if (val === "") {
-                  setTrackLength(NaN);
-                }
-              }}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
+        <div className="p-6 space-y-4 bg-white rounded-lg shadow-md">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Panjang Lintasan {motionData1.name} (m)
+              </label>
+              <input
+                type="number"
+                required
+                min="0"
+                disabled={isRunning}
+                value={trackLengthInput1}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setTrackLengthInput1(val);
+                  const parsed = parseFloat(val);
+                  if (!isNaN(parsed) && parsed >= 0) {
+                    setTrackLength1(parsed);
+                  } else if (val === "") {
+                    setTrackLength1(NaN);
+                  }
+                }}
+                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Panjang Lintasan {motionData2.name} (m)
+              </label>
+              <input
+                type="number"
+                required
+                min="0"
+                disabled={isRunning}
+                value={trackLengthInput2}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setTrackLengthInput2(val);
+                  const parsed = parseFloat(val);
+                  if (!isNaN(parsed) && parsed >= 0) {
+                    setTrackLength2(parsed);
+                  } else if (val === "") {
+                    setTrackLength2(NaN);
+                  }
+                }}
+                className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
           </div>
 
-          <div className="flex justify-between items-center ">
+          <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold">Simulasi</h2>
-            <div className="space-x-2 flex">
+            <div className="flex space-x-2">
               <button
                 onClick={toggleSimulation}
-                className="flex items-center px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
+                className="flex items-center px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
                 disabled={hasFinished1 && hasFinished2}
               >
                 {isRunning ? (
@@ -151,7 +185,7 @@ function App() {
 
               <button
                 onClick={handleReset}
-                className="flex items-center px-4 py-2 rounded-md bg-gray-600 text-white hover:bg-gray-700 active:scale-95"
+                className="flex items-center px-4 py-2 text-white bg-gray-600 rounded-md hover:bg-gray-700 active:scale-95"
               >
                 <RotateCcw className="w-4 h-4 mr-1" />
                 Reset
@@ -165,7 +199,7 @@ function App() {
             isRunning={isRunning}
             onDataPoint={setCurrentData1}
             color="text-blue-600"
-            trackLength={trackLength}
+            trackLength={trackLength1}
             onFinish={() => setHasFinished1(true)}
           />
           <MotionSimulation
@@ -174,11 +208,11 @@ function App() {
             isRunning={isRunning}
             onDataPoint={setCurrentData2}
             color="text-red-600"
-            trackLength={trackLength}
+            trackLength={trackLength2}
             onFinish={() => setHasFinished2(true)}
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <DataDisplay
               data={currentData1}
               name={motionData1.name}

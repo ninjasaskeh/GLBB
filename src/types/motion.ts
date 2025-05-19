@@ -7,7 +7,7 @@ export interface MotionData {
   position: number;
   currentVelocity: number;
   name: string;
-  trackLength: number;
+  trackLength?: number;
 }
 
 export interface DataPoint {

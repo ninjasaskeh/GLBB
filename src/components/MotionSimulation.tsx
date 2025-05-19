@@ -95,6 +95,7 @@ export const MotionSimulation: React.FC<MotionSimulationProps> = ({
   }, []);
 
   const positionPercentage = Math.min((position / trackLength) * 100, 100);
+  // 100 = (80 / 200) * 100 = 40
 
   return (
     <div className="w-full h-24 bg-gray-100 rounded-lg relative overflow-hidden">
